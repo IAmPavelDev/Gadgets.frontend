@@ -256,6 +256,11 @@ export interface CreateGadgetDto {
     details?: string | undefined;
 }
 
+export interface GadgetsLookupDto {
+    id?: string;
+    title?: string | undefined;
+}
+
 export interface ProblemDetails {
     type?: string | undefined;
     title?: string | undefined;
