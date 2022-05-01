@@ -1,23 +1,34 @@
-import React from 'react';
+import React, { FC, ReactElement} from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
+import userManager, {
+  loadUser,
+  signinRedirect,
+  signoutRedirect
+} from './auth/user-service';
+import { isMetaProperty } from 'typescript';
+import AuthProvider from './auth/authProvider';
+import GadgetList from './gadgets/gadgetsList';
+import SignInOIDC from './auth/SignInOIDC';
+import SignOutOIDC from './auth/SignOutOIDC';
+import GetAll from './gadgets/GetAll';
 
-function App() {
+const App: FC<{}> = ():ReactElement => {
+  loadUser();
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <button onClick={() => signinRedirect()}>Login</button>
+        <AuthProvider userManager={userManager}>
+          <Router>
+            <Routes>
+              <Route path='/' element={<GetAll/>}/>
+              <Route path='/signout-oidc' element={<SignOutOIDC/>}/>
+              <Route path='/signin-oidc' element={<SignInOIDC/>}/>
+            </Routes>
+          </Router>
+        </AuthProvider>
       </header>
     </div>
   );

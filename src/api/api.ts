@@ -25,7 +25,7 @@ export class Client extends clientBase {
      * Gets the list of gadgets
      * @return Success
      */
-    gadgetsGET(): Promise<GadgetListVm> {
+    async gadgetsGET(): Promise<GadgetListVm> {
         let url_ = this.baseUrl + "/api/gadgets";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -36,26 +36,26 @@ export class Client extends clientBase {
             }
         };
 
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGadgetsGET(_response);
-        });
+        const transformedOptions_ = await this.transformOptions(options_);
+        const _response = await this.http.fetch(url_, transformedOptions_);
+        console.log(_response);
+        return await this.processGadgetsGET(_response);
     }
 
-    protected processGadgetsGET(response: Response): Promise<GadgetListVm> {
+    protected async processGadgetsGET(response: Response): Promise<GadgetListVm> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GadgetListVm;
-            return result200;
-            });
+            const _responseText = await response.text();
+        let result200: any = null;
+        result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GadgetListVm;
+        return result200;
         } else if (status === 401) {
             return response.text().then((_responseText) => {
             let result401: any = null;
-            result401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ProblemDetails;
+            result401 = _responseText === "" 
+            ? null 
+            : JSON.parse(_responseText, this.jsonParseReviver) as ProblemDetails;
             return throwException("If user is unauthorized", status, _responseText, _headers, result401);
             });
         } else if (status !== 200 && status !== 204) {
@@ -71,7 +71,7 @@ export class Client extends clientBase {
      * @param body (optional) CreateGadgetDto object
      * @return Success
      */
-    gadgetsPOST(body: CreateGadgetDto | undefined): Promise<void> {
+    async gadgetsPOST(body: CreateGadgetDto | undefined): Promise<void> {
         let url_ = this.baseUrl + "/api/gadgets";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -85,30 +85,27 @@ export class Client extends clientBase {
             }
         };
 
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGadgetsPOST(_response);
-        });
+        const transformedOptions_ = await this.transformOptions(options_);
+        console.log(transformedOptions_);
+        const _response = await this.http.fetch(url_, transformedOptions_);
+        console.log(_response);
+        return await this.processGadgetsPOST(_response);
     }
 
-    protected processGadgetsPOST(response: Response): Promise<void> {
+    protected async processGadgetsPOST(response: Response): Promise<void> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
-            return response.text().then((_responseText) => {
+            const _responseText = await response.text();
             return;
-            });
         } else if (status === 401) {
-            return response.text().then((_responseText) => {
+            const _responseText_1 = await response.text();
             let result401: any = null;
-            result401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ProblemDetails;
-            return throwException("If user is unauthorized", status, _responseText, _headers, result401);
-            });
+            result401 = _responseText_1 === "" ? null : JSON.parse(_responseText_1, this.jsonParseReviver) as ProblemDetails;
+            return throwException("If user is unauthorized", status, _responseText_1, _headers, result401);
         } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
+            const _responseText_2 = await response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText_2, _headers);
         }
         return Promise.resolve<void>(null as any);
     }
@@ -118,7 +115,7 @@ export class Client extends clientBase {
      * @param body (optional) UpdateGadgetDto object
      * @return Success
      */
-    gadgetsPUT(body: UpdateGadgetDto | undefined): Promise<void> {
+    async gadgetsPUT(body: UpdateGadgetDto | undefined): Promise<void> {
         let url_ = this.baseUrl + "/api/gadgets";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -132,30 +129,25 @@ export class Client extends clientBase {
             }
         };
 
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGadgetsPUT(_response);
-        });
+        const transformedOptions_ = await this.transformOptions(options_);
+        const _response = await this.http.fetch(url_, transformedOptions_);
+        return await this.processGadgetsPUT(_response);
     }
 
-    protected processGadgetsPUT(response: Response): Promise<void> {
+    protected async processGadgetsPUT(response: Response): Promise<void> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 204) {
-            return response.text().then((_responseText) => {
+            const _responseText = await response.text();
             return;
-            });
         } else if (status === 401) {
-            return response.text().then((_responseText) => {
+            const _responseText_1 = await response.text();
             let result401: any = null;
-            result401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ProblemDetails;
-            return throwException("If user is unauthorized", status, _responseText, _headers, result401);
-            });
+            result401 = _responseText_1 === "" ? null : JSON.parse(_responseText_1, this.jsonParseReviver) as ProblemDetails;
+            return throwException("If user is unauthorized", status, _responseText_1, _headers, result401);
         } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
+            const _responseText_2 = await response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText_2, _headers);
         }
         return Promise.resolve<void>(null as any);
     }
@@ -165,7 +157,7 @@ export class Client extends clientBase {
      * @param id Gadget id (guid)
      * @return Success
      */
-    gadgetsGET2(id: number): Promise<GadgetsDetailsVm> {
+    async gadgetsGET2(id: number): Promise<GadgetsDetailsVm> {
         let url_ = this.baseUrl + "/api/gadgets/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -179,32 +171,27 @@ export class Client extends clientBase {
             }
         };
 
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGadgetsGET2(_response);
-        });
+        const transformedOptions_ = await this.transformOptions(options_);
+        const _response = await this.http.fetch(url_, transformedOptions_);
+        return await this.processGadgetsGET2(_response);
     }
 
-    protected processGadgetsGET2(response: Response): Promise<GadgetsDetailsVm> {
+    protected async processGadgetsGET2(response: Response): Promise<GadgetsDetailsVm> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
-            return response.text().then((_responseText) => {
+            const _responseText = await response.text();
             let result200: any = null;
             result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GadgetsDetailsVm;
             return result200;
-            });
         } else if (status === 401) {
-            return response.text().then((_responseText) => {
+            const _responseText_1 = await response.text();
             let result401: any = null;
-            result401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ProblemDetails;
-            return throwException("If user is unauthorized", status, _responseText, _headers, result401);
-            });
+            result401 = _responseText_1 === "" ? null : JSON.parse(_responseText_1, this.jsonParseReviver) as ProblemDetails;
+            return throwException("If user is unauthorized", status, _responseText_1, _headers, result401);
         } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
+            const _responseText_2 = await response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText_2, _headers);
         }
         return Promise.resolve<GadgetsDetailsVm>(null as any);
     }
@@ -214,7 +201,7 @@ export class Client extends clientBase {
      * @param id Id of the gadget (guid)
      * @return Success
      */
-    gadgetsDELETE(id: number): Promise<void> {
+    async gadgetsDELETE(id: number): Promise<void> {
         let url_ = this.baseUrl + "/api/gadgets/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -227,30 +214,25 @@ export class Client extends clientBase {
             }
         };
 
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGadgetsDELETE(_response);
-        });
+        const transformedOptions_ = await this.transformOptions(options_);
+        const _response = await this.http.fetch(url_, transformedOptions_);
+        return await this.processGadgetsDELETE(_response);
     }
 
-    protected processGadgetsDELETE(response: Response): Promise<void> {
+    protected async processGadgetsDELETE(response: Response): Promise<void> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 204) {
-            return response.text().then((_responseText) => {
+            const _responseText = await response.text();
             return;
-            });
         } else if (status === 401) {
-            return response.text().then((_responseText) => {
+            const _responseText_1 = await response.text();
             let result401: any = null;
-            result401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ProblemDetails;
-            return throwException("If user is unauthorized", status, _responseText, _headers, result401);
-            });
+            result401 = _responseText_1 === "" ? null : JSON.parse(_responseText_1, this.jsonParseReviver) as ProblemDetails;
+            return throwException("If user is unauthorized", status, _responseText_1, _headers, result401);
         } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
+            const _responseText_2 = await response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText_2, _headers);
         }
         return Promise.resolve<void>(null as any);
     }
